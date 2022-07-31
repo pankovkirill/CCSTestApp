@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/fromAtoZ"
+        android:title="@string/a_to_z" />
+    <item
+        android:id="@+id/fromZtoA"
+        android:title="@string/z_to_a" />
+    <item
+        android:id="@+id/ascending"
+        android:title="@string/ascending" />
+    <item
+        android:id="@+id/descending"
+        android:title="@string/descending" />
+</menu>
