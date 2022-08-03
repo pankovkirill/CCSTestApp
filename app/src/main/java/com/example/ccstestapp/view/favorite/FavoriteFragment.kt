@@ -52,32 +52,10 @@ class FavoriteFragment : Fragment(R.layout.fragment_favorite) {
             id: Int,
             list: MutableList<FavoriteEntity>
         ): Boolean {
-            showPopupMenu(itemView, layoutPosition, id, list)
-            return true
-        }
-    }
-
-    private fun showPopupMenu(
-        itemView: View,
-        layoutPosition: Int,
-        id: Int,
-        list: MutableList<FavoriteEntity>
-    ) {
-        val popupMenu = PopupMenu(context, itemView)
-        popupMenu.apply {
-            inflate(R.menu.favorite_popup_menu)
-
-            setOnMenuItemClickListener {
-                when (it.itemId) {
-                    R.id.delete -> {
-                        viewModel.deleteById(id)
-                        list.removeAt(layoutPosition)
-                        binding.favoriteRecyclerView.adapter?.notifyItemRemoved(layoutPosition)
-                    }
-                }
-                true
+            lifecycleScope.launchWhenResumed {
+                showPopupMenu(itemView, layoutPosition, id, list)
             }
-            show()
+            return true
         }
     }
 
@@ -113,10 +91,34 @@ class FavoriteFragment : Fragment(R.layout.fragment_favorite) {
     }
 
     private fun renderData(list: List<FavoriteEntity>) {
-        if (list.isEmpty()) {
+        if (list.isNotEmpty()) {
+            adapter.setData(list as ArrayList<FavoriteEntity>)
+        } else
             Toast.makeText(context, getString(R.string.no_data_available), Toast.LENGTH_SHORT)
                 .show()
-        } else
-            adapter.setData(list as ArrayList<FavoriteEntity>)
+    }
+
+    private fun showPopupMenu(
+        itemView: View,
+        layoutPosition: Int,
+        id: Int,
+        list: MutableList<FavoriteEntity>
+    ) {
+        val popupMenu = PopupMenu(context, itemView)
+        popupMenu.apply {
+            inflate(R.menu.favorite_popup_menu)
+
+            setOnMenuItemClickListener {
+                when (it.itemId) {
+                    R.id.delete -> {
+                        viewModel.deleteById(id)
+                        list.removeAt(layoutPosition)
+                        binding.favoriteRecyclerView.adapter?.notifyItemRemoved(layoutPosition)
+                    }
+                }
+                true
+            }
+            show()
+        }
     }
 }

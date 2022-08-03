@@ -7,14 +7,14 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ccstestapp.R
-import com.example.ccstestapp.model.data.RatesModel
+import com.example.ccstestapp.model.data.CurrencyModel
 
 class MainAdapter(private var onListItemClickListener: OnListItemClickListener) :
     RecyclerView.Adapter<MainAdapter.RecyclerItemViewHolder>() {
 
-    private var data: List<RatesModel> = arrayListOf()
+    private var data: List<CurrencyModel> = arrayListOf()
 
-    fun setData(data: List<RatesModel>) {
+    fun setData(data: List<CurrencyModel>) {
         this.data = data
         notifyDataSetChanged()
     }
@@ -36,7 +36,7 @@ class MainAdapter(private var onListItemClickListener: OnListItemClickListener) 
 
     inner class RecyclerItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
-        fun bind(data: RatesModel) {
+        fun bind(data: CurrencyModel) {
             if (layoutPosition != RecyclerView.NO_POSITION) {
                 itemView.findViewById<TextView>(R.id.valueTextView).text = data.value.toString()
                 itemView.findViewById<TextView>(R.id.nameTextView).text = data.name
@@ -48,6 +48,6 @@ class MainAdapter(private var onListItemClickListener: OnListItemClickListener) 
     }
 
     interface OnListItemClickListener {
-        fun onItemClick(data: RatesModel)
+        fun onItemClick(data: CurrencyModel)
     }
 }

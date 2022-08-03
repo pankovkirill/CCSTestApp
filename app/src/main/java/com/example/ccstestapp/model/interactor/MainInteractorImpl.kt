@@ -2,7 +2,7 @@ package com.example.ccstestapp.model.interactor
 
 import com.example.ccstestapp.model.data.AppState
 import com.example.ccstestapp.model.data.DataModel
-import com.example.ccstestapp.model.data.RatesModel
+import com.example.ccstestapp.model.data.CurrencyModel
 import com.example.ccstestapp.model.data.ResponseDataModel
 import com.example.ccstestapp.model.repository.RepositoryLocal
 import com.example.ccstestapp.model.repository.RepositoryRemote
@@ -18,84 +18,52 @@ class MainInteractorImpl
         repositoryLocal.saveToDb(entity)
     }
 
-    override suspend fun getData(orderType: String, base: String): AppState {
-        val appState: AppState
-        appState =
-            AppState.Success(
-                convertResponseDataToRatesModel(
-                    repositoryRemote.getData(base),
-                    orderType
-                )
+    override suspend fun getData(base: String): AppState {
+        return AppState.Success(
+            convertResponseDataToDataModel(
+                repositoryRemote.getData(base)
             )
-        return appState
+        )
     }
 
-    private fun convertResponseDataToRatesModel(
+    private fun convertResponseDataToDataModel(
         responseDataModel: ResponseDataModel,
-        orderType: String
     ): DataModel {
         return DataModel(
             responseDataModel.base,
-            getListFromRates(orderType, responseDataModel.rates)
+            getListFromRates(responseDataModel.rates)
         )
     }
 
     private fun getListFromRates(
-        orderType: String,
         rates: ResponseDataModel.Rates
-    ): List<RatesModel> {
-        val list = listOf(
-            RatesModel("USD", rates.USD),
-            RatesModel("EUR", rates.EUR),
-            RatesModel("JPY", rates.JPY),
-            RatesModel("GBP", rates.GBP),
-            RatesModel("AUD", rates.AUD),
-            RatesModel("CAD", rates.CAD),
-            RatesModel("CHF", rates.CHF),
-            RatesModel("CNY", rates.CNY),
-            RatesModel("SEK", rates.SEK),
-            RatesModel("MXN", rates.MXN),
-            RatesModel("NZD", rates.NZD),
-            RatesModel("SGD", rates.SGD),
-            RatesModel("HKD", rates.HKD),
-            RatesModel("NOK", rates.NOK),
-            RatesModel("KRW", rates.KRW),
-            RatesModel("TRY", rates.TRY),
-            RatesModel("INR", rates.INR),
-            RatesModel("RUB", rates.RUB),
-            RatesModel("BRL", rates.BRL),
-            RatesModel("ZAR", rates.ZAR),
-            RatesModel("DKK", rates.DKK),
-            RatesModel("PLN", rates.PLN),
-            RatesModel("TWD", rates.TWD),
-            RatesModel("THB", rates.THB),
-            RatesModel("MYR", rates.MYR),
-            RatesModel("UAH", rates.UAH),
-            RatesModel("KZT", rates.KZT),
-        )
-        return when (orderType) {
-            A_TO_Z_ORDER -> {
-                list.sortedBy { it.name }
-            }
-            Z_TO_A_ORDER -> {
-                list.sortedByDescending { it.name }
-            }
-            ASCENDING -> {
-                list.sortedBy { it.value }
-            }
-            DESCENDING -> {
-                list.sortedByDescending { it.value }
-            }
-            else -> {
-                list.sortedBy { it.name }
-            }
-        }
-    }
-
-    companion object {
-        const val A_TO_Z_ORDER = "from a to z"
-        const val Z_TO_A_ORDER = "from z to a"
-        const val ASCENDING = "ascending"
-        const val DESCENDING = "descending"
-    }
+    ) = listOf(
+        CurrencyModel("USD", rates.USD),
+        CurrencyModel("EUR", rates.EUR),
+        CurrencyModel("JPY", rates.JPY),
+        CurrencyModel("GBP", rates.GBP),
+        CurrencyModel("AUD", rates.AUD),
+        CurrencyModel("CAD", rates.CAD),
+        CurrencyModel("CHF", rates.CHF),
+        CurrencyModel("CNY", rates.CNY),
+        CurrencyModel("SEK", rates.SEK),
+        CurrencyModel("MXN", rates.MXN),
+        CurrencyModel("NZD", rates.NZD),
+        CurrencyModel("SGD", rates.SGD),
+        CurrencyModel("HKD", rates.HKD),
+        CurrencyModel("NOK", rates.NOK),
+        CurrencyModel("KRW", rates.KRW),
+        CurrencyModel("TRY", rates.TRY),
+        CurrencyModel("INR", rates.INR),
+        CurrencyModel("RUB", rates.RUB),
+        CurrencyModel("BRL", rates.BRL),
+        CurrencyModel("ZAR", rates.ZAR),
+        CurrencyModel("DKK", rates.DKK),
+        CurrencyModel("PLN", rates.PLN),
+        CurrencyModel("TWD", rates.TWD),
+        CurrencyModel("THB", rates.THB),
+        CurrencyModel("MYR", rates.MYR),
+        CurrencyModel("UAH", rates.UAH),
+        CurrencyModel("KZT", rates.KZT),
+    )
 }

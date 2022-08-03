@@ -1,6 +1,6 @@
 package com.example.ccstestapp
 
-val LIST_RATES = arrayListOf(
+val CURRENCY_LIST = arrayListOf(
     "USD",
     "EUR",
     "JPY",

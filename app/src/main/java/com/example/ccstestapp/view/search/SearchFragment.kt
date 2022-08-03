@@ -1,22 +1,20 @@
 package com.example.ccstestapp.view.search
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.View
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.ccstestapp.LIST_RATES
+import com.example.ccstestapp.CURRENCY_LIST
 import com.example.ccstestapp.R
 import com.example.ccstestapp.databinding.FragmentSearchBinding
 import com.example.ccstestapp.view.main.MainFragment
-import kotlin.collections.ArrayList
 
 class SearchFragment : Fragment(R.layout.fragment_search) {
 
     private lateinit var binding: FragmentSearchBinding
 
-    private val displayList = ArrayList<String>()
+    private val displayList = arrayListOf<String>()
 
     private val adapter: SearchAdapter by lazy {
         SearchAdapter(
@@ -40,7 +38,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentSearchBinding.bind(view)
 
-        displayList.addAll(LIST_RATES)
+        displayList.addAll(CURRENCY_LIST)
 
         binding.favoriteRecyclerView.layoutManager = LinearLayoutManager(context)
         binding.favoriteRecyclerView.adapter = adapter
@@ -57,15 +55,15 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
             p0?.let {
                 if (it.isNotEmpty()) {
                     displayList.clear()
-                    LIST_RATES.forEach { item ->
+                    CURRENCY_LIST.forEach { item ->
                         if (item.contains(it.uppercase()))
                             displayList.add(item)
                     }
-                    binding.favoriteRecyclerView.adapter?.notifyDataSetChanged()
+                    adapter.notifyDataSetChanged()
                 } else {
                     displayList.clear()
-                    displayList.addAll(LIST_RATES)
-                    binding.favoriteRecyclerView.adapter?.notifyDataSetChanged()
+                    displayList.addAll(CURRENCY_LIST)
+                    adapter.notifyDataSetChanged()
                 }
             }
 

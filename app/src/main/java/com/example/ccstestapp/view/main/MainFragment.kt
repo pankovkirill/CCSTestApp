@@ -10,15 +10,12 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ccstestapp.App
-import com.example.ccstestapp.model.interactor.MainInteractorImpl.Companion.ASCENDING
-import com.example.ccstestapp.model.interactor.MainInteractorImpl.Companion.A_TO_Z_ORDER
-import com.example.ccstestapp.model.interactor.MainInteractorImpl.Companion.DESCENDING
-import com.example.ccstestapp.model.interactor.MainInteractorImpl.Companion.Z_TO_A_ORDER
 import com.example.ccstestapp.viewmodel.MainViewModel
 import com.example.ccstestapp.R
 import com.example.ccstestapp.databinding.FragmentMainBinding
 import com.example.ccstestapp.model.data.AppState
-import com.example.ccstestapp.model.data.RatesModel
+import com.example.ccstestapp.model.data.CurrencyModel
+import com.example.ccstestapp.model.data.OrderType
 import com.example.ccstestapp.view.search.SearchFragment
 import javax.inject.Inject
 
@@ -37,7 +34,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
 
     private val onListItemClickListener =
         object : MainAdapter.OnListItemClickListener {
-            override fun onItemClick(data: RatesModel) {
+            override fun onItemClick(data: CurrencyModel) {
                 viewModel.addRateToFavoriteList(data.name)
                 Toast.makeText(context, "add", Toast.LENGTH_SHORT).show()
             }
@@ -84,7 +81,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
                 renderData(it)
             }
         }
-        viewModel.getData(A_TO_Z_ORDER, baseRate)
+        viewModel.getData(baseRate)
     }
 
     private fun renderData(appState: AppState) {
@@ -127,16 +124,16 @@ class MainFragment : Fragment(R.layout.fragment_main) {
             setOnMenuItemClickListener {
                 when (it.itemId) {
                     R.id.fromAtoZ -> {
-                        viewModel.getData(A_TO_Z_ORDER, baseRate)
+                        viewModel.orderCurrencyList(OrderType.A_TO_Z)
                     }
                     R.id.fromZtoA -> {
-                        viewModel.getData(Z_TO_A_ORDER, baseRate)
+                        viewModel.orderCurrencyList(OrderType.Z_TO_A)
                     }
                     R.id.ascending -> {
-                        viewModel.getData(ASCENDING, baseRate)
+                        viewModel.orderCurrencyList(OrderType.ASCENDING)
                     }
                     R.id.descending -> {
-                        viewModel.getData(DESCENDING, baseRate)
+                        viewModel.orderCurrencyList(OrderType.DESCENDING)
                     }
                 }
                 true
